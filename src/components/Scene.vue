@@ -3,14 +3,11 @@
   <div id="tool-bar">
     <div id="add-card-btn" v-on:click="addNewCard">Add Card</div>
   </div>
-  <div id="card-list" v-on:click="deselectCards" v-on:mousemove="onUserMouseMove">
+  <div id="card-list" v-on:click="deselectCards">
     <Card v-for="card in cards"
           :key="card.cardId"
           v-bind:selected="card.selected"
-          v-bind:title="card.title"
-          v-bind:xPos="card.xPos"
-          v-bind:yPos="card.yPos"
-          v-on:click.native="handleCardSelection(card)"/>
+          v-bind:title="card.title"/>
   </div>
 </div>
 </template>
@@ -57,12 +54,6 @@ export default {
       card.selected = true;
       this.currentCard = card;
     },
-    onUserMouseMove: function(e) {
-      console.log('here');
-      if (e.ctrlKey) {
-        console.log(e.x, e.y);
-      }
-    }
   }
 }
 </script>
@@ -77,6 +68,7 @@ export default {
 #card-list {
   width: 100%;
   height: 100%;
+  overflow: hidden;
 }
 
 #add-card-btn {

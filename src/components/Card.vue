@@ -1,5 +1,5 @@
 <template>
-<div v-bind:class="cardStyleClass">
+<div v-bind:class="cardStyleClass" v-bind:style="{ top: yPos + 'px', left: xPos + 'px'}" @mousedown="enableDragCard" @mousemove="dragCard" @mouseup="disableDragCard">
   {{ title }}
 </div>
 </template>
@@ -7,10 +7,12 @@
 <script>
 export default {
   name: "Card",
-  props: ["title", "cardId", "selected", "xPos", "yPos"],
+  props: ["title", "cardId", "selected"],
   data: function() {
     return {
-      // isSelected: this.selected,
+      dragEnabled: false,
+      xPos: 0,
+      yPos: 0,
     }
   },
   computed: {
@@ -30,6 +32,21 @@ export default {
     },
     deselectCard: function() {
       this.isSelected = false;
+    },
+    enableDragCard: function() {
+      console.log('enable drag');
+      this.dragEnabled = true;
+    },
+    disableDragCard: function() {
+      console.log('disable drag');
+      this.dragEnabled = false;
+      console.log(this.xPos, this.yPos);
+    },
+    dragCard: function(e) {
+      if (!this.dragEnabled) { return; }
+      console.log('is dragging');
+      this.xPos = e.x - 50;
+      this.yPos = e.y - 50;
     }
   }
 }
@@ -38,6 +55,7 @@ export default {
 <style scoped>
 
 .selectedCard {
+  cursor: move;
   position: absolute;
   background: mediumseagreen;
   border: 5px solid goldenrod;
